@@ -3,7 +3,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = backendUrl;
 
@@ -30,7 +29,6 @@ export const AuthProvider = ({ children }) => {
     } 
 
     // Login function to handle user authentication and socket connection
-
     const login = async (state, credentials) => {
         try {
             const { data } = await axios.post(`/api/auth/${state}`, credentials);
@@ -64,7 +62,6 @@ export const AuthProvider = ({ children }) => {
         try {
             const { data } = await axios.put("/api/auth/update-profile", body);
             if (data.success) {
-                // Fallback to data.userData to gracefully handle varying backend responses
                 setAuthUser(data.user || data.userData);
                 toast.success("Profile updated successfully");
                 return true;
@@ -73,7 +70,6 @@ export const AuthProvider = ({ children }) => {
                 return false;
             }
         } catch (error) {
-            // Capture the specific backend error message
             toast.error(error.response?.data?.message || error.message);
             return false;
         }
