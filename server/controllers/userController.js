@@ -15,7 +15,6 @@ export const signup = async (req, res) => {
             })
         }
         const user = await User.findOne({ email });
-
         if (user) {
             return res.status(409).json({
                 success: false, 

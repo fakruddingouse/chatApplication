@@ -12,10 +12,12 @@ export const ChatProvider = ({ children }) => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [unseenMessages, setUnseenMessages] = useState({});
 
-    const { socket, axios } = useContext(AuthContext);
+    const { socket, axios, authUser } = useContext(AuthContext);
 
     // function to get all users fo sidebar
     const getUsers = async () => {
+        if (!authUser) return;
+
         try {
             const { data } = await axios.get("/api/messages/users");
             if (data.success) {
@@ -23,19 +25,21 @@ export const ChatProvider = ({ children }) => {
                 setUnseenMessages(data.unseenMessages);
             }
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response?.data?.message || error.message);
         }
     }
 
     // function to get messages fot selected user
     const getMessages = async (userId) => {
+        if (!authUser) return;
+
         try {
             const { data } = await axios.get(`/api/messages/${userId}`);
             if (data.success) {
                 setMessages(data.messages);
             }
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response?.data?.message || error.message);
         }
     }
 

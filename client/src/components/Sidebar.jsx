@@ -8,7 +8,7 @@ const Sidebar = () => {
 
   const { getUsers, users, selectedUser, setSelectedUser, unseenMessages, setUnseenMessages } = useContext(ChatContext);
 
-  const { logout, onlineUsers } = useContext(AuthContext);
+  const { logout, onlineUsers, authUser } = useContext(AuthContext);
 
   const [input, setInput] = useState(false);
 
@@ -17,8 +17,9 @@ const Sidebar = () => {
   const filteredUsers = input ? users.filter((user)=>user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
 
   useEffect(() => {
+    if (!authUser) return;
     getUsers();
-  }, [onlineUsers]);
+  }, [authUser, onlineUsers]);
 
   return (
     <div className={`bg-[#818582]/10 h-full p-5 rounded-r-xl overflow-y-scroll text-white ${selectedUser ? 'max-md:hidden' : ''}`}>
